@@ -1,19 +1,23 @@
-import React , {useEffect} from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import classes from "./Cockpit.css";
+import AuthContext from "../../context/auth-context";
+
 const cockpit = (props) => {
-  useEffect(() =>{
-    console.log('cockpit.js useEffect');
-     setTimeout(() => {
-      alert('Saved data to cloud!');
-    },1000);
-    return () =>{
-      console.log('cleaniiiing');
-    }
-  }, []);
+  const toggleButtonRef = useRef(null);
+  const authContext = useContext(AuthContext);
+  console.log(authContext.authenticated);
   useEffect(() => {
-    console.log('cockpit.js second useEffect');
+    console.log("cockpit.js useEffect");
+    toggleButtonRef.current.click();
     return () => {
-      console.log('cleaniiiing 2222222');
+      console.log("cleaniiiing");
+    };
+  }, []);
+
+  useEffect(() => {
+    console.log("cockpit.js second useEffect");
+    return () => {
+      console.log("cleaniiiing 2222222");
     };
   });
 
@@ -26,14 +30,21 @@ const cockpit = (props) => {
   }
 
   let btnClass = [classes.Button];
-    if (props.showPersons) {
-        btnClass.push(classes.Red);
-    }
-    return (
+  if (props.showPersons) {
+    btnClass.push(classes.Red);
+  }
+  return (
     <div>
       <h1 className={Assignedclasses.join(" ")}>Hi I'm react</h1>
-      <button className={btnClass.join(" ")} onClick={props.clicked}>
+      <button
+        ref={toggleButtonRef}
+        className={btnClass.join(" ")}
+        onClick={props.clicked}
+      >
         Toggle me senpai
+      </button>
+      <button onClick={authContext.login} className={btnClass.join(" ")}>
+        Log in{" "}
       </button>
     </div>
   );
